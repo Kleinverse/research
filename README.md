@@ -1,4 +1,4 @@
-# Kleinverse Research Repository
+# Kleinverse Open Research Repository
 
 Experiment code and reproduction materials for research papers by Kleinverse AI, Inc.
 
