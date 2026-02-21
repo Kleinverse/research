@@ -91,6 +91,20 @@ python src/verify.py
 
 ---
 
+## GPU Numerical Verification
+
+Differences are at floating-point machine precision (≤ 7.44e-14), confirming numerical identity between CPU and GPU implementations.
+
+```
+K=4       max|diff|=0.00e+00  PASS
+K=6       max|diff|=9.85e-15  PASS
+K=8       max|diff|=7.44e-14  PASS
+K=ltanh   max|diff|=1.50e-14  PASS
+K=lexp    max|diff|=7.11e-15  PASS
+```
+
+---
+
 ## GPU Benchmark
 
 RTX 5080, `gpu_mem_limit=12GB`. See [Kleinverse/gpuicalcc](https://github.com/Kleinverse/gpuicalcc) for details.
