@@ -68,7 +68,7 @@ python src/verify.py
 Mean Amari index (×10⁻²). Lower is better. Bold indicates best per row.
 Numbers in parentheses indicate convergence failures out of 20 trials.
 
-| Dist | N | logcosh | exp | cube | Fast(4) | Fast(6) | Fast(8) | LCC(4) | LCC(6) | LCC(8) | LC-tanh | LC-exp |
+| Dist | N | logcosh | exp | cube | Fast(4) | Fast(6) | Fast(8) | LCC(4) | LCC(6) | LCC(8) | LCC-tanh | LCC-exp |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | Laplace | 10k | 0.91 | 0.87 | 1.11 | 1.58 | 3.20 | 5.16 | 1.58 | 1.44 | 3.44 | **0.99** | 0.90 |
 | Laplace | 100k | 0.29 | 0.27 | 0.35 | 0.47 | 0.85 | 1.63 | 0.47 | 0.44 | 0.64 | 0.32 | **0.29** |
@@ -79,7 +79,7 @@ Numbers in parentheses indicate convergence failures out of 20 trials.
 | Student-t15 | 10k | 3.85 | 4.18 | 3.77 | 4.14 | 5.94 | 8.66 | 4.14 | 3.77 | 3.70 | **3.74** | 3.87 |
 | Student-t15 | 100k | 1.20 | 1.28 | **1.16** | 1.20 | 1.74 | 3.25 | 1.20 | 1.17 | 1.18 | 1.17 | 1.23 |
 
-`LC-tanh` and `LC-exp` match or outperform all classical contrasts on super-Gaussian
+`LCC-tanh` and `LCC-exp` match or outperform all classical contrasts on super-Gaussian
 sources and are the safest default when the source distribution is unknown. On
 sub-Gaussian sources (Uniform), high-order polynomial LCC is preferred. On
 Student-t15 (κ₄ ≈ 0.46), all methods are within sampling noise.
@@ -88,7 +88,7 @@ Student-t15 (κ₄ ≈ 0.46), all methods are within sampling noise.
 
 Numbers in parentheses indicate convergence failures out of 20 trials.
 
-| α | m₃ | m₄ | logcosh | exp | cube | Fast(4) | Fast(6) | Fast(8) | LCC(4) | LCC(6) | LCC(8) | LC-tanh | LC-exp |
+| α | m₃ | m₄ | logcosh | exp | cube | Fast(4) | Fast(6) | Fast(8) | LCC(4) | LCC(6) | LCC(8) | LCC-tanh | LCC-exp |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | 0.5 | 2.83 | 12.0 | 0.71 | 0.70 | 0.86 | 1.09 | 1.83 | 2.59 | 1.09 | 1.65 | 6.04 | **0.55** | **0.50** |
 | 1.0 | 2.00 | 6.0 | 1.10 | 1.20 | 1.17 | 1.40 | 2.65 | 4.57 | 1.40 | 1.26 | 8.69(9) | **0.75** | **0.68** |
@@ -100,7 +100,7 @@ Numbers in parentheses indicate convergence failures out of 20 trials.
 | 20.0 | 0.45 | 0.3 | 23.11(6) | 36.11(11) | 9.94(1) | 6.85 | 7.07 | 9.73 | 6.85 | 3.81 | **2.85** | 6.09 | 6.17 |
 | 50.0 | 0.28 | 0.1 | 38.23(8) | 41.32(10) | 32.52(6) | 25.82(6) | 18.35(3) | 20.12(5) | 24.31(6) | 8.90(1) | **5.91** | 22.30(4) | 23.83(4) |
 
-`LC-tanh` and `LC-exp` dominate for moderate kurtosis (α = 1–12). Classical
+`LCC-tanh` and `LCC-exp` dominate for moderate kurtosis (α = 1–12). Classical
 contrasts degrade progressively and fail near Gaussian (α ≥ 12). At the
 near-Gaussian extreme (α = 50), `LCC(8)` is the only reliable contrast.
 The `LCC(8)` singularity at α = 1 (9 convergence failures) is a Newton
