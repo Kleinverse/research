@@ -112,10 +112,10 @@ Four 512×512 grayscale textures from scikit-image [[2]](#references) mixed by a
 
 | | Cameraman | Moon | Brick | Gravel |
 |---|---|---|---|---|
-| Source | <img src="img/src_cameraman.png" width="180"> | <img src="img/src_moon.png" width="180"> | <img src="img/src_brick.png" width="180"> | <img src="img/src_gravel.png" width="180"> |
-| Mix | <img src="img/mix_1.png" width="180"> | <img src="img/mix_2.png" width="180"> | <img src="img/mix_3.png" width="180"> | <img src="img/mix_4.png" width="180"> |
-| FastICA(4) | <img src="img/fica_cameraman.png" width="180"> | <img src="img/fica_moon.png" width="180"> | <img src="img/fica_brick.png" width="180"> | <img src="img/fica_gravel.png" width="180"> |
-| LCC(6) | <img src="img/lcc_cameraman.png" width="180"> | <img src="img/lcc_moon.png" width="180"> | <img src="img/lcc_brick.png" width="180"> | <img src="img/lcc_gravel.png" width="180"> |
+| Source | ![](img/src_cameraman.png) | ![](img/src_moon.png) | ![](img/src_brick.png) | ![](img/src_gravel.png) |
+| Mix | ![](img/mix_1.png) | ![](img/mix_2.png) | ![](img/mix_3.png) | ![](img/mix_4.png) |
+| FastICA(4) | ![](img/fica_cameraman.png) | ![](img/fica_moon.png) | ![](img/fica_brick.png) | ![](img/fica_gravel.png) |
+| LCC(6) | ![](img/lcc_cameraman.png) | ![](img/lcc_moon.png) | ![](img/lcc_brick.png) | ![](img/lcc_gravel.png) |
 
 ### Audio Separation — MUSDB18
 
@@ -128,6 +128,15 @@ The four stems (vocals, drums, bass, other) of a MUSDB18 [[3]](#references) trac
 | Bass | −0.21 | −0.35 | 0.9807 | **0.9994** |
 | Other | −0.03 | +0.13 | 0.9814 | **0.9995** |
 | **Amari (×10⁻²)** | | | 4.01 | **1.60** |
+
+**Residual waveforms** (FastICA left, LCC right):
+
+| Stem | FastICA(4) | LCC(6) |
+|---|---|---|
+| Vocals | <img src="img/fica_vocals_residual.png" width="300"> | <img src="img/lcc_vocals_residual.png" width="300"> |
+| Drums | <img src="img/fica_drums_residual.png" width="300"> | <img src="img/lcc_drums_residual.png" width="300"> |
+| Bass | <img src="img/fica_bass_residual.png" width="300"> | <img src="img/lcc_bass_residual.png" width="300"> |
+| Other | <img src="img/fica_other_residual.png" width="300"> | <img src="img/lcc_other_residual.png" width="300"> |
 
 **Listen to separated audio:**
 
