@@ -112,10 +112,10 @@ Four 512×512 grayscale textures from scikit-image [[2]](#references) mixed by a
 
 | | Cameraman | Moon | Brick | Gravel |
 |---|---|---|---|---|
-| Source | <img src="img/src_cameraman.png" width="120"> | <img src="img/src_moon.png" width="120"> | <img src="img/src_brick.png" width="120"> | <img src="img/src_gravel.png" width="120"> |
-| Mix | <img src="img/mix_1.png" width="120"> | <img src="img/mix_2.png" width="120"> | <img src="img/mix_3.png" width="120"> | <img src="img/mix_4.png" width="120"> |
-| FastICA(4) | <img src="img/fica_cameraman.png" width="120"> | <img src="img/fica_moon.png" width="120"> | <img src="img/fica_brick.png" width="120"> | <img src="img/fica_gravel.png" width="120"> |
-| LCC(6) | <img src="img/lcc_cameraman.png" width="120"> | <img src="img/lcc_moon.png" width="120"> | <img src="img/lcc_brick.png" width="120"> | <img src="img/lcc_gravel.png" width="120"> |
+| Source | <img src="img/src_cameraman.png" width="180"> | <img src="img/src_moon.png" width="180"> | <img src="img/src_brick.png" width="180"> | <img src="img/src_gravel.png" width="180"> |
+| Mix | <img src="img/mix_1.png" width="180"> | <img src="img/mix_2.png" width="180"> | <img src="img/mix_3.png" width="180"> | <img src="img/mix_4.png" width="180"> |
+| FastICA(4) | <img src="img/fica_cameraman.png" width="180"> | <img src="img/fica_moon.png" width="180"> | <img src="img/fica_brick.png" width="180"> | <img src="img/fica_gravel.png" width="180"> |
+| LCC(6) | <img src="img/lcc_cameraman.png" width="180"> | <img src="img/lcc_moon.png" width="180"> | <img src="img/lcc_brick.png" width="180"> | <img src="img/lcc_gravel.png" width="180"> |
 
 ### Audio Separation — MUSDB18
 
