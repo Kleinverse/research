@@ -26,3 +26,5 @@ Each subdirectory contains the experiment code for one paper. The core library f
 ## License
 
 All works in this repository are licensed under [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
+
+You are free to share and adapt the material for any purpose, provided appropriate credit is given to the original paper and author(s).
