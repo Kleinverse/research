@@ -13,8 +13,10 @@ The ICALCC package is at [Kleinverse/icalcc](https://github.com/Kleinverse/icalc
 
 ```
 icalcc/
-├── truncation.py     # Table III: bounded LCC vs classical contrasts
-├── separation.py     # Table IV: Gamma(α) scan
+├── src/
+│   ├── exp_bounded.py        # Tables III and IV: separation experiments
+│   ├── bench_gpu_speed.py    # Table II: GPU speedup benchmark
+│   └── verify.py             # Numerical identity check (CPU vs GPU)
 └── README.md
 ```
 
@@ -26,17 +28,36 @@ icalcc/
 pip install icalcc numpy scipy
 ```
 
+GPU scripts additionally require:
+
+```bash
+pip install gpuicalcc torch
+```
+
+GPU acceleration is used automatically in `exp_bounded.py` if `gpuicalcc` is installed.
+
 ---
 
 ## Usage
 
 ```bash
-# Bounded LCC vs classical (Table III)
-python truncation.py
+# Both tables (20 trials)
+python src/exp_bounded.py
 
-# Gamma(α) scan (Table IV)
-python separation.py --scan
+# Table III only: bounded LCC vs classical
+python src/exp_bounded.py --table 1
+
+# Table IV only: Gamma(α) scan (full paper run)
+python src/exp_bounded.py --table 2 --trials 200
+
+# Table II: GPU speedup benchmark
+python src/bench_gpu_speed.py --mem 12
+
+# Verify CPU and GPU produce identical results
+python src/verify.py
 ```
+
+> **Note:** `bench_gpu_speed.py` runs 100 trials per (K, N) combination. At N=1M, ltanh and lexp each require approximately 100s CPU time per trial. The full benchmark takes several hours.
 
 ---
 
