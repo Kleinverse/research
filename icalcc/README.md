@@ -2,7 +2,7 @@
 
 Experiment code for the paper:
 
-> T. Saito, "Bounded Locally Centered Contrasts for Independent Component Analysis," *TechRxiv*, 2026.  
+> T. Saito, "ICALCC: Locally Centered Contrast Functions for FastICA with GPU Acceleration," *TechRxiv*, 2026.  
 > https://doi.org/10.36227/techrxiv.XXXXXXX
 
 The ICALCC package is at [Kleinverse/icalcc](https://github.com/Kleinverse/icalcc).
