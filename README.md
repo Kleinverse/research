@@ -1,6 +1,6 @@
-# Kleinverse Open Research Repository
+# Kleinverse Research
 
-Experiment code and reproduction materials for research papers by Kleinverse AI, Inc.
+Experiment code and reproduction materials for research papers by [Kleinverse AI, Inc.](https://kleinverse.io)
 
 ---
 
@@ -19,4 +19,10 @@ FastICA truncates the cumulant generating function at order $k=4$, introducing a
 
 ## Organization
 
-Each subdirectory contains the experiment code for one paper.
+Each subdirectory contains the experiment code for one paper. The core library for LCC is maintained separately at [Kleinverse/icalcc](https://github.com/Kleinverse/icalcc).
+
+---
+
+## License
+
+This work is licensed under [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
