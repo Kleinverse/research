@@ -30,6 +30,13 @@ Classical FastICA contrasts evaluate each sample in isolation and cannot adapt t
 
 ## Organization
 
+```
+research/
+├── lcc/        # Locally Centered Cyclic Kernels
+├── icalcc/     # Bounded Locally Centered Contrasts + GPU benchmark
+└── README.md
+```
+
 Each subdirectory contains the experiment code for one paper. The core libraries are maintained separately:
 
 - [Kleinverse/icalcc](https://github.com/Kleinverse/icalcc) — CPU package
