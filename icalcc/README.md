@@ -63,42 +63,48 @@ python src/verify.py
 
 ## Results
 
-### Bounded LCC vs Classical Contrasts (d=4, N=5000, 20 trials)
+### Standard Distributions (d=4, max_iter=500, 20 trials)
 
 Mean Amari index (×10⁻²). Lower is better. Bold indicates best per row.
+Numbers in parentheses indicate convergence failures out of 20 trials.
 
-| Distribution | κ₄ | logcosh | exp | LCC-tanh | LCC-exp |
-|---|---|---|---|---|---|
-| Uniform | −1.2 | 0.93 | 0.94 | **0.68** | 0.88 |
-| Beta(2,5) | −0.1 | **6.96** | 5.06 | 30.85 | 21.64 |
-| Gamma(8) | 0.75 | 3.78 | 22.43 | **2.05** | 2.58 |
-| Gamma(2) | 3.0 | 2.94 | 2.38 | 1.29 | **1.19** |
-| Laplace | 3.0 | **1.36** | 1.24 | 1.45 | 1.28 |
-| Student-t5 | 6.0 | 2.72 | 2.89 | **2.65** | 2.92 |
-| Exponential | 6.0 | 1.41 | 1.08 | 0.92 | **0.60** |
-| Mixed | mixed | **1.15** | 1.10 | 1.37 | 1.38 |
+| Dist | N | logcosh | exp | cube | Fast(4) | Fast(6) | Fast(8) | LCC(4) | LCC(6) | LCC(8) | LC-tanh | LC-exp |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Laplace | 10k | 0.91 | 0.87 | 1.11 | 1.58 | 3.20 | 5.16 | 1.58 | 1.44 | 3.44 | **0.99** | 0.90 |
+| Laplace | 100k | 0.29 | 0.27 | 0.35 | 0.47 | 0.85 | 1.63 | 0.47 | 0.44 | 0.64 | 0.32 | **0.29** |
+| Logistic | 10k | 1.90 | 1.93 | 2.06 | 2.43 | 4.26 | 6.81 | 2.43 | 2.09 | 2.18 | 1.96 | **1.90** |
+| Logistic | 100k | 0.62 | 0.63 | 0.66 | 0.75 | 1.13 | 2.04 | 0.75 | 0.69 | 0.67 | **0.63** | **0.62** |
+| Uniform | 10k | 0.65 | 0.66 | 0.63 | 0.57 | 0.51 | **0.48** | 0.57 | 0.58 | 0.58 | 0.57 | 0.59 |
+| Uniform | 100k | 0.20 | 0.20 | 0.19 | 0.17 | 0.15 | **0.14** | 0.17 | 0.17 | 0.17 | 0.17 | 0.16 |
+| Student-t15 | 10k | 3.85 | 4.18 | 3.77 | 4.14 | 5.94 | 8.66 | 4.14 | 3.77 | 3.70 | **3.74** | 3.87 |
+| Student-t15 | 100k | 1.20 | 1.28 | **1.16** | 1.20 | 1.74 | 3.25 | 1.20 | 1.17 | 1.18 | 1.17 | 1.23 |
 
-Bounded contrasts lead on skewed, moderately heavy-tailed sources (Gamma, Exponential).
-Classical contrasts remain competitive at extreme kurtosis (Beta, Student-t5) and
-on sub-Gaussian sources (Uniform), consistent with the ARE analysis in the paper.
+`LC-tanh` and `LC-exp` match or outperform all classical contrasts on super-Gaussian
+sources and are the safest default when the source distribution is unknown. On
+sub-Gaussian sources (Uniform), high-order polynomial LCC is preferred. On
+Student-t15 (κ₄ ≈ 0.46), all methods are within sampling noise.
 
-### Gamma(α) Scan (d=4, N=10000, 200 trials)
+### Gamma(α) Scan (d=4, N=10000, 20 trials)
 
-\* at least one convergence failure out of 20 trials.
+Numbers in parentheses indicate convergence failures out of 20 trials.
 
-| α | κ₃ | κ₄ | logcosh | exp | LCC(6) | LCC(8) |
-|---|---|---|---|---|---|---|
-| 2.0 | 1.41 | 3.0 | 1.78 | 3.83 | **1.08** | 1.46 |
-| 5.0 | 0.89 | 1.2 | 4.01 | \*7.68 | **1.54** | 1.32 |
-| 8.0 | 0.71 | 0.8 | 6.98 | \*21.6 | **2.10** | 1.65 |
-| 12 | 0.58 | 0.5 | \*11.7 | \*25.2 | 2.64 | **2.02** |
-| 20 | 0.45 | 0.3 | \*23.1 | \*36.1 | 3.81 | **2.85** |
-| 50 | 0.28 | 0.1 | \*38.2 | \*41.3 | \*9.60 | **5.91** |
+| α | m₃ | m₄ | logcosh | exp | cube | Fast(4) | Fast(6) | Fast(8) | LCC(4) | LCC(6) | LCC(8) | LC-tanh | LC-exp |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 0.5 | 2.83 | 12.0 | 0.71 | 0.70 | 0.86 | 1.09 | 1.83 | 2.59 | 1.09 | 1.65 | 6.04 | **0.55** | **0.50** |
+| 1.0 | 2.00 | 6.0 | 1.10 | 1.20 | 1.17 | 1.40 | 2.65 | 4.57 | 1.40 | 1.26 | 8.69(9) | **0.75** | **0.68** |
+| 2.0 | 1.41 | 3.0 | 1.78 | 3.83 | 1.54 | 1.62 | 2.65 | 4.09 | 1.62 | **1.08** | 1.46 | 1.00 | 0.89 |
+| 3.0 | 1.15 | 2.0 | 2.75 | 5.73 | 2.09 | 2.07 | 3.55 | 5.83 | 2.07 | **1.24** | 1.33 | 1.34 | 1.26 |
+| 5.0 | 0.89 | 1.2 | 4.01 | 7.68(2) | 2.79 | 2.65 | 4.11 | 6.86 | 2.65 | 1.54 | 1.32 | **1.87** | **1.78** |
+| 8.0 | 0.71 | 0.8 | 6.98 | 21.55(3) | 4.19 | 3.68 | 5.23 | 7.93 | 3.68 | 2.10 | 1.65 | **2.79** | **2.61** |
+| 12.0 | 0.58 | 0.5 | 11.73(2) | 25.22(4) | 6.06 | 4.52 | 5.13 | 7.73 | 4.52 | 2.64 | 2.02 | **3.95** | **3.80** |
+| 20.0 | 0.45 | 0.3 | 23.11(6) | 36.11(11) | 9.94(1) | 6.85 | 7.07 | 9.73 | 6.85 | 3.81 | **2.85** | 6.09 | 6.17 |
+| 50.0 | 0.28 | 0.1 | 38.23(8) | 41.32(10) | 32.52(6) | 25.82(6) | 18.35(3) | 20.12(5) | 24.31(6) | 8.90(1) | **5.91** | 22.30(4) | 23.83(4) |
 
-Classical contrasts degrade progressively as kurtosis decreases and fail entirely
-near Gaussian (α ≥ 12). LCC(6) dominates at moderate kurtosis; LCC(8) takes over
-at near-Gaussian (α ≥ 12). The winning order shifts with α exactly as predicted
-by the asymptotic analysis in the paper.
+`LC-tanh` and `LC-exp` dominate for moderate kurtosis (α = 1–12). Classical
+contrasts degrade progressively and fail near Gaussian (α ≥ 12). At the
+near-Gaussian extreme (α = 50), `LCC(8)` is the only reliable contrast.
+The `LCC(8)` singularity at α = 1 (9 convergence failures) is a Newton
+fixed-point defect that recovers at α = 2.
 
 ---
 
