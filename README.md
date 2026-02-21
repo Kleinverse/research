@@ -1,6 +1,6 @@
 # Kleinverse Open Research Repository (KORR)
 
-Experiment code and reproduction materials for research papers by Kleinverse AI, Inc.
+Experiment code and reproduction materials for research papers by [Kleinverse AI, Inc.](https://kleinverse.io)
 
 ---
 
@@ -17,9 +17,23 @@ FastICA truncates the cumulant generating function at order $k=4$, introducing a
 
 ---
 
+### ICALCC: Bounded Locally Centered Contrasts for ICA
+
+> T. Saito, "Bounded Locally Centered Contrasts for Independent Component Analysis," *TechRxiv*, 2026.  
+> https://doi.org/10.36227/techrxiv.XXXXXXX
+
+Classical FastICA contrasts evaluate each sample in isolation and cannot adapt to distributional shape. Bounded LCC contrasts replace the pointwise nonlinearity with a pairwise statistic, inheriting outlier robustness while gaining sensitivity to skewness through local centering. LCC-exp admits an exact interpretation as maximizing Rényi entropy of order 2. Experiments show 27–55% improvement over classical contrasts on skewed sources.
+
+**Code:** [icalcc/](icalcc/) — requires `icalcc`, `numpy`, `scipy`
+
+---
+
 ## Organization
 
-Each subdirectory contains the experiment code for one paper. The core library for LCC is maintained separately at [Kleinverse/icalcc](https://github.com/Kleinverse/icalcc).
+Each subdirectory contains the experiment code for one paper. The core libraries are maintained separately:
+
+- [Kleinverse/icalcc](https://github.com/Kleinverse/icalcc) — CPU package
+- [Kleinverse/gpuicalcc](https://github.com/Kleinverse/gpuicalcc) — GPU-accelerated package
 
 ---
 
