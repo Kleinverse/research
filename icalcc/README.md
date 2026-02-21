@@ -171,8 +171,7 @@ Polynomial contrasts (K=4,6,8) benefit from GPU at Nâ‰¥500k, reaching up to 2.4Ã
   title     = {{ICALCC}: Locally Centered Contrast Functions for
                {FastICA} with {GPU} Acceleration},
   year      = {2026},
-  publisher = {TechRxiv},
-  url       = {https://www.techrxiv.org/users/869274/articles/1390891}
+  publisher = {TechRxiv}
 }
 
 @misc{saito2026lcc,
@@ -180,8 +179,7 @@ Polynomial contrasts (K=4,6,8) benefit from GPU at Nâ‰¥500k, reaching up to 2.4Ã
   title     = {Locally Centered Cyclic Kernels for Higher-Order
                Independent Component Analysis},
   year      = {2026},
-  publisher = {TechRxiv},
-  doi       = {10.36227/techrxiv.XXXXXXX}
+  publisher = {TechRxiv}
 }
 ```
 
