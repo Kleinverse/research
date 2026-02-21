@@ -22,9 +22,9 @@ FastICA truncates the cumulant generating function at order $k=4$, introducing a
 > T. Saito, "Bounded Locally Centered Contrasts for Independent Component Analysis," *TechRxiv*, 2026.  
 > https://doi.org/10.36227/techrxiv.XXXXXXX
 
-Classical FastICA contrasts evaluate each sample in isolation and cannot adapt to distributional shape. Bounded LCC contrasts replace the pointwise nonlinearity with a pairwise statistic, inheriting outlier robustness while gaining sensitivity to skewness through local centering. LCC-exp admits an exact interpretation as maximizing Rényi entropy of order 2. Experiments show 27–55% improvement over classical contrasts on skewed sources.
+Classical FastICA contrasts evaluate each sample in isolation and cannot adapt to distributional shape. Bounded LCC contrasts replace the pointwise nonlinearity with a pairwise statistic, inheriting outlier robustness while gaining sensitivity to skewness through local centering. LCC-exp admits an exact interpretation as maximizing Rényi entropy of order 2. Experiments show 27–55% improvement over classical contrasts on skewed sources. A GPU-accelerated extension using PyTorch achieves 40–48x speedup for bounded contrasts at N=1M.
 
-**Code:** [icalcc/](icalcc/) — requires `icalcc`, `numpy`, `scipy`
+**Code:** [icalcc/](icalcc/) — requires `icalcc`, `numpy`, `scipy`; GPU scripts additionally require `gpuicalcc`, `torch`
 
 ---
 
