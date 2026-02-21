@@ -3,7 +3,7 @@
 Experiment code for the paper:
 
 > **Locally Centered Cyclic Kernels for Higher-Order Independent Component Analysis**  
-> Tetsuya Saito, *IEEE Signal Processing Letters*, 2026  
+> Tetsuya Saito, *TexRxiv*, 2026  
 > Kleinverse AI, Inc. / Globiz Professional University
 
 ---
@@ -73,7 +73,7 @@ marks the boundary where estimator variance overtakes the bias correction.
 @article{saito2026lcc,
   author  = {Saito, Tetsuya},
   title   = {Locally Centered Cyclic Kernels for Higher-Order Independent Component Analysis},
-  journal = {IEEE Signal Processing Letters},
+  journal = {TexRxiv},
   year    = {2026}
 }
 ```
