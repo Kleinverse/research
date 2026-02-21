@@ -1,6 +1,5 @@
 # Kleinverse Open Research Repository (KORR)
-Experiment code and reproduction materials for research papers by
-[Kleinverse AI, Inc.](https://kleinverse.io)
+Experiment code and reproduction materials for research papers by Kleinverse AI, Inc.
 
 ---
 
@@ -9,7 +8,6 @@ Experiment code and reproduction materials for research papers by
 ### LCC-ICA: Locally Centered Cyclic Kernels for Higher-Order ICA
 > T. Saito, "Locally Centered Cyclic Kernels for Higher-Order
 > Independent Component Analysis," *TechRxiv*, 2026.  
-> https://doi.org/10.36227/techrxiv.XXXXXXX
 
 FastICA truncates the cumulant generating function at order k=4,
 introducing a permanent bias bounded below by the Itakura--Saito
@@ -26,7 +24,6 @@ stem separation confirm the predicted gains and their limits.
 ### ICALCC: Locally Centered Contrast Functions for FastICA with GPU Acceleration
 > T. Saito, "ICALCC: Locally Centered Contrast Functions for
 > FastICA with GPU Acceleration," *TechRxiv*, 2026.  
-> https://doi.org/10.36227/techrxiv.XXXXXXX
 
 Classical FastICA contrasts evaluate each sample in isolation and
 cannot adapt to distributional shape. Bounded LCC contrasts replace
