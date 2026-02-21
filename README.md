@@ -1,6 +1,6 @@
 # Kleinverse Research Repository
 
-Experiment code and reproduction materials for research papers by [Kleinverse AI, Inc.](https://kleinverse.io)
+Experiment code and reproduction materials for research papers by Kleinverse AI, Inc.
 
 ---
 
