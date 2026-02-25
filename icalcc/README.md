@@ -179,7 +179,8 @@ Polynomial contrasts (K=4,6,8) benefit from GPU at Nâ‰¥500k, reaching up to 2.4Ã
   title     = {Locally Centered Cyclic Kernels for Higher-Order
                Independent Component Analysis},
   year      = {2026},
-  publisher = {TechRxiv}
+  publisher = {TechRxiv},
+  doi       = {10.36227/techrxiv.177203264.46969730}
 }
 ```
 
