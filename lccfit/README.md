@@ -1,1 +1,1 @@
-
+# Asymptotic Inconsistency of Truncated Power-Mean and Its Cyclic Kernel Remedy
