@@ -172,6 +172,7 @@ Polynomial contrasts (K=4,6,8) benefit from GPU at Nâ‰¥500k, reaching up to 2.4Ã
                {FastICA} with {GPU} Acceleration},
   year      = {2026},
   publisher = {TechRxiv}
+  doi       = {10.36227/techrxiv.177220376.62411390}
 }
 
 @misc{saito2026lcc,
