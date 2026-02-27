@@ -122,7 +122,7 @@ At $k = 2$ the median implied markup diverges to 1,498% — an artifact of near-
 | 75% | 0.174 | 0.546 | 0.551 |
 | 90% | 0.495 | 0.771 | 0.766 |
 
-**Curvature scaling $\hat{\sigma} = 1/(1-\hat{\theta})$**
+**Curvature scaling (elasticity of substitution) $\hat{\sigma} = 1/(1-\hat{\theta})$**
 
 | Percentile | k = 2 | k = 4 | k = 6 |
 |---|---:|---:|---:|
@@ -131,7 +131,7 @@ At $k = 2$ the median implied markup diverges to 1,498% — an artifact of near-
 | 75% | 1.210 | 2.202 | 2.226 |
 | 90% | 1.981 | 4.366 | 4.268 |
 
-**Implied markup $\hat{\tau}^* = (1-\hat{\theta})/\hat{\theta}$**
+**Implied markup (optimum tariff) $\hat{\tau} = (1-\hat{\theta})/\hat{\theta}$**
 
 | Percentile | k = 2 | k = 4 | k = 6 |
 |---|---:|---:|---:|
