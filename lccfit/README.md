@@ -18,6 +18,7 @@ The `lccfit` package implementing the LCC estimator is distributed separately at
 
 ```
 research/lcc/
+├── README.md
 └── src/
     ├── experiments.py      LCC and CtrdM Monte Carlo evaluation
     ├── estimation.py       Theta and elasticity estimation from 2024 US HS10
@@ -84,6 +85,8 @@ python src/converter.py -i imports_2024.csv -o lcc_samples.csv
 The output is a flat CSV with one row per cell containing commodity code,
 year, n, and `Ehk_k` columns for each requested order, ready for
 `estimation.py`.
+
+---
 
 ## Estimation
 
