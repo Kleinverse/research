@@ -23,7 +23,7 @@ research/lcc/
     ├── estimation.py       Theta and elasticity estimation from 2024 US HS10
     ├── benchmark.py        Wall-clock comparison of three Maclaurin routes
     ├── converter.py        HS10 preprocessing via lccfit
-    └── gpu_kernel.py     Optional fused CuPy CUDA/ROCm kernel
+    └── gpu_kernel.py       Optional fused CuPy CUDA/ROCm kernel
 ```
 
 ---
