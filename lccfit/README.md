@@ -23,7 +23,7 @@ research/lcc/
     ├── estimation.py       Theta and elasticity estimation from 2024 US HS10
     ├── benchmark.py        Wall-clock comparison of three Maclaurin routes
     ├── converter.py        HS10 preprocessing via lccfit
-    └── vstat_native.py     Optional fused CuPy CUDA/ROCm kernel
+    └── gpu_kernel.py     Optional fused CuPy CUDA/ROCm kernel
 ```
 
 ---
@@ -33,7 +33,7 @@ research/lcc/
 - Python 3.10+
 - NumPy, SciPy, pandas
 - PyTorch (CUDA-enabled build recommended)
-- CuPy (optional, for fused GPU kernel in `vstat_native.py`)
+- CuPy (optional, for fused GPU kernel in `gpu_kernel.py`)
   - NVIDIA CUDA 12: `pip install cupy-cuda12x`
   - AMD ROCm 7.x+: `pip install cupy-rocm-7-0`
 
