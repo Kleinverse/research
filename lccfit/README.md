@@ -1,114 +1,127 @@
-# Cyclic Kernel Remedy for Asymptotic Inconsistency of Power-Mean Estimations
+# lccfit
 
-Numerical experiments, estimation routines, and benchmarking code accompanying the paper:
+> [!CAUTION]
+> This package is in active development. APIs may change without notice and results should be verified against the reference implementation in the research repository. Use in production is not recommended at this stage.
+
+Python package for locally centered cyclic (LCC) kernel estimation of the continuum translog model.
 
 > Tetsuya Saito. *Asymptotic Inconsistency of Truncated Power-Mean and Its Cyclic Kernel Remedy*. TechRxiv, 2026.
 > URL: https://github.com/Kleinverse/research/lcc
 
-A companion paper applying the LCC kernel to independent component analysis is:
-
-> Tetsuya Saito. *Locally Centered Cyclic Kernels for Higher-Order Independent Component Analysis*. TechRxiv, February 25, 2026.
-> DOI: 10.36227/techrxiv.177203264.46969730/v1
-
-The `lccfit` package implementing the LCC estimator is distributed separately at [github.com/Kleinverse/lccfit](https://github.com/Kleinverse/lccfit).
-
 ---
 
-## Structure
+## Installation
 
-```
-research/lcc/
-├── README.md
-└── src/
-    ├── experiments.py      LCC and CtrdM Monte Carlo evaluation
-    ├── estimation.py       Theta and elasticity estimation from 2024 US HS10
-    ├── benchmark.py        Wall-clock comparison of three Maclaurin routes
-    └── gpu_kernel.py       Optional fused CuPy CUDA/ROCm kernel
-```
-
----
-
-## Requirements
-
-- Python 3.10+
-- NumPy, SciPy, pandas
-- PyTorch (CUDA-enabled build recommended)
-- CuPy (optional, for fused GPU kernel in `gpu_kernel.py`)
-  - NVIDIA CUDA 12: `pip install cupy-cuda12x`
-  - AMD ROCm 7.x+: `pip install cupy-rocm-7-0`
-
----
-
-## Experiments
-
-Evaluates LCC and CtrdM across six distribution families over a grid of
-sample sizes, expansion orders $k \in \{2,\ldots,8\}$, and preference
-parameters.
+Clone the repository:
 
 ```bash
-# Default: theta = 0.5
-python src/experiments.py
-
-# Specify theta values
-python src/experiments.py --theta 0.1 0.5 0.9
-
-# Quick validation run (T=100, n in [10, 100, 1000])
-python src/experiments.py --theta 0.5 --quick
+git clone https://github.com/Kleinverse/lccfit.git
 ```
 
-Results are written to `csv_results/` as `section_a.csv`, `section_c.csv`,
-and `section_d.csv`, reproducing Figures 3a--3b and Table 3 of the paper.
+> [!NOTE]
+> Optionally, install in editable mode. PyPI release is planned for a future version.
+
+```bash
+cd lccfit
+pip install -e .
+```
+
+Requires Python 3.10+, NumPy, PyTorch. CUDA-enabled PyTorch is recommended for large datasets.
 
 ---
 
-## Data Conversion
+## Overview
 
-Converts Schott's Stata file to CSV before passing to `estimation.py`.
+Standard second-order Maclaurin truncation of the log-MGF is asymptotically inconsistent: the bias from discarding higher-order cumulants does not vanish with sample size. The LCC kernel recovers the true cumulant at each order as a nondegenerate V-statistic, and `lccfit` provides a full pipeline from raw data to theta and sigma estimates.
+
+---
+
+## Modules
+
+### `lccfit.converter`
+
+Draws k-tuples via Monte Carlo from a single cell's empirical distribution (optionally weighted), evaluates the LCC kernel $h_k = \prod_{j=1}^k (z_j - \bar{z}_k)$ for each order, and returns an `LCCData` object ready for fitting. The Monte Carlo operates within each cell. The panel structure sits one level up: call `convert()` once per cell and pass the resulting `LCCData` objects together to `batch_fit()`.
 
 ```python
-import pandas as pd
-y = '2024'
-df = pd.read_stata(f'imp_detl_yearly_{y}.dta')
-df.to_csv(f'imports_{y}.csv', index=False)
+import lccfit
+
+# Basic usage
+data = lccfit.convert(z, orders=[2, 4, 6], n_mc=100_000)
+data.summary()
+
+# With log transform and weights
+data = lccfit.convert(uv, log=True, weights=shares, orders=[2, 4, 6])
+
+# For GMM fitting (shared draws required)
+data = lccfit.convert(z, shared_draws=True, store_samples=True)
+M = data.to_moments_matrix()   # [n_mc, len(orders)]
+
+# Save to disk
+data.save('output.csv')
+data.save('output.parquet', fmt='parquet')
 ```
+
+**`convert()` options**
+
+| Parameter | Default | Description |
+|---|---|---|
+| `log` | `False` | Apply log transform before processing |
+| `weights` | `None` | Non-negative sampling weights, normalised internally |
+| `orders` | `[2..8]` | Kernel orders to compute |
+| `n_mc` | `100_000` | Monte Carlo draws per order |
+| `dtype` | `'float64'` | Numerical precision (`'float32'` for speed) |
+| `device` | `'auto'` | `'cuda'`, `'cpu'`, or `torch.device` |
+| `seed` | `None` | Random seed (CPU path only) |
+| `store_samples` | `True` | Store raw draws for GMM fitting |
+| `shared_draws` | `False` | Share index draws across orders (required for GMM) |
+| `meta` | `None` | Free-form metadata dict attached to `LCCData` |
 
 ---
 
-## Estimation
+### `lccfit.fit`
 
-Estimates the preference parameter $\theta$ and the elasticity of substitution
-from the 2024 US HS10 import data using the LCC V-statistic kernel at
-expansion orders $k \in \{2, 4, 6\}$ via Newton inversion of the Maclaurin
-series.
+Partition formula inversion and Newton solver for theta and elasticity.
 
-```bash
-python src/estimation.py -i imports_2024.csv -o theta_results.csv
+```python
+from lccfit.fit import fit_cell, batch_fit, reg_fit_cell
 
-# Options
---min-varieties 5      Minimum varieties per cell (default: 5)
---n-mc 100000          MC samples per cell per kernel order (default: 100000)
---batch-size 256       Cells per GPU batch (default: 256)
---float32              Use float32 instead of float64
+# Single cell (CPU)
+result = fit_cell(z, w, Ehk=data.Ehk, orders=[2, 4, 6])
+result.summary()
+
+# Batch (GPU) — preferred for large datasets
+results = batch_fit(cell_list, Ehk_list, keys, solve_orders=[2, 4, 6])
+
+# Regression variant with Jensen-corrected kappas
+result = reg_fit_cell(z, w, samples=data.samples, solve_orders=[2, 4, 6])
 ```
 
-Reproduces Table 4, Table 5, and Figure 4 of the paper.
+**`FitResult` fields**
+
+| Field | Description |
+|---|---|
+| `kappa` | Inverted CGF cumulants $\kappa_k$ for each order |
+| `theta` | Estimated power-mean parameter $\theta$ per solve order |
+| `sigma` | Curvature scaling parameter $\sigma = 1/(1-\theta)$ per solve order |
+| `tariff` | Optimal markup $(1-\theta)/\theta$ per solve order |
+| `Ehk` | E[h_k] estimates from the converter |
 
 ---
 
-## Benchmarking
+## Full Pipeline Example
 
-Compares wall-clock time across LCC, CtrdM, and the numerical
-central-difference baseline at $k = 6$ and $\theta = 0.5$.
+```python
+import numpy as np
+import lccfit
+from lccfit.fit import fit_cell
 
-```bash
-# Synthesized distributions only
-python src/benchmark.py
+z = np.random.lognormal(0, 0.5, 500)
+w = np.ones(500) / 500
 
-# Include real HS10 data
-python src/benchmark.py -i imports_2024.csv --order 6 --h 1e-4
+data   = lccfit.convert(z, orders=[2, 4, 6], n_mc=100_000)
+result = fit_cell(z, w, Ehk=data.Ehk, orders=[2, 4, 6])
+result.summary()
 ```
-
-Reproduces Table 7 of the paper.
 
 ---
 
@@ -122,20 +135,10 @@ Reproduces Table 7 of the paper.
   howpublished = {TechRxiv},
   url          = {https://github.com/Kleinverse/research/lcc}
 }
-
-@misc{saito2026ica,
-  author       = {Tetsuya Saito},
-  title        = {Locally Centered Cyclic Kernels for Higher-Order Independent Component Analysis},
-  year         = {2026},
-  month        = {February},
-  howpublished = {TechRxiv},
-  doi          = {10.36227/techrxiv.177203264.46969730/v1}
-}
 ```
 
 ---
 
 ## License
 
-This work is licensed under [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
-You are free to share and adapt the material for any purpose, provided appropriate credit is given to the original paper and the author.
+MIT License. Copyright (c) 2026 Tetsuya Saito, Kleinverse AI, Inc.
