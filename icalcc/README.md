@@ -163,6 +163,108 @@ Polynomial contrasts (K=4,6,8) benefit from GPU at N≥500k, reaching up to 2.4�
 
 ---
 
+## Functional Forms of Bounded Kernels
+
+This section collects the elementary identities underlying the bounded LCC contrasts and relates them to the classical scikit-learn contrasts.
+
+### Hyperbolic functions
+
+The hyperbolic cosine, sine, and tangent are defined by
+
+$$\cosh(u) = \frac{e^u + e^{-u}}{2}, \qquad \sinh(u) = \frac{e^u - e^{-u}}{2}, \qquad \tanh(u) = \frac{\sinh(u)}{\cosh(u)}.$$
+
+The Pythagorean identity $\cosh^2(u) - \sinh^2(u) = 1$ gives
+
+$$\frac{d}{du}\tanh(u) = \mathrm{sech}^2(u) \equiv 1 - \tanh^2(u),$$
+
+where $\mathrm{sech}(u) = 1/\cosh(u)$. Since $|\tanh(u)| < 1$ for all finite $u$, we have $\mathrm{sech}^2(u) \in (0, 1]$, which is the key boundedness fact.
+
+### Log-cosh and LCC-tanh
+
+$G(u) = \log\ \cosh(u)$ gives
+
+$$G'(u) = \tanh(u) \quad\text{and}\quad G''(u) = \mathrm{sech}^2(u).$$
+
+For large $|u|$, $\log\ \cosh(u) \approx |u| - \log 2$, so $G$ interpolates smoothly between a quadratic near the origin and a linear function in the tails. Substituting $G$ into the bounded LCC definition recovers the LCC-tanh contrast:
+
+$$g_{\mathrm{lt}}(y_i) = \frac{1}{B}\sum_{j=1}^{B} G'(y_i - y_j) = \frac{1}{B}\sum_{j=1}^{B} \tanh(y_i - y_j).$$
+
+The Newton denominator evaluates to
+
+$$g_{\mathrm{lt}}'(y_i) = B^{-1}\sum_j \mathrm{sech}^2(y_i - y_j) \in (0, 1],$$
+
+which is bounded away from zero for any finite data.
+
+### Gaussian and LCC-exp
+
+$G(u) = -\exp(-u^2/2)$ gives
+
+$$G'(u) = u\,e^{-u^2/2} \quad\text{and}\quad G''(u) = (1 - u^2)\,e^{-u^2/2}.$$
+
+The first derivative is odd and attains its extrema at $u = \pm 1$:
+
+$$\max_{u} |G'(u)| = \frac{1}{\sqrt{e}},$$
+
+so that $g_{\mathrm{le}}$ is bounded by $1/\sqrt{e}$ in absolute value. The second derivative changes sign at $u = \pm 1$, but $(1-u^2)e^{-u^2/2}$ has strictly positive expectation over any non-degenerate distribution, so the Newton denominator $\mathbb{E}[g_{\mathrm{le}}'] > 0$. Substituting $G$ into the bounded LCC definition recovers the LCC-exp contrast:
+
+$$g_{\mathrm{le}}(y_i) = \frac{1}{B}\sum_{j=1}^{B} (y_i - y_j)\,\exp\!\left(-\tfrac{1}{2}(y_i - y_j)^2\right).$$
+
+The full derivative chain for $\hat{R}_2$ with respect to $\mathbf{w}$ follows directly:
+
+$$\frac{\partial \hat{R}_2}{\partial \mathbf{w}} = \frac{2}{N^2}\sum_{i,j} G'(y_i - y_j)\,\mathbf{z}_i,$$
+
+which upon averaging over $j$ yields the LCC-exp gradient.
+
+### Comparison with classical contrasts
+
+| Contrast | $G(u)$ | $g = G'$ | $g' = G''$ | Bounded |
+|---|---|---|---|---|
+| logcosh | $\log\ \cosh(u)$ | $\tanh(u)$ | $\mathrm{sech}^2(u)$ | ✓ |
+| exp | $-e^{-u^2/2}$ | $u\,e^{-u^2/2}$ | $(1-u^2)\,e^{-u^2/2}$ | ✓ |
+| cube | $u^4/4$ | $u^3$ | $3u^2$ | ✗ |
+| LCC-tanh | $\log\ \cosh(\delta_{ij})$ | $\tanh(\delta_{ij})$ | $\mathrm{sech}^2(\delta_{ij})$ | ✓ |
+| LCC-exp | $-e^{-\delta_{ij}^2/2}$ | $\delta_{ij}\,e^{-\delta_{ij}^2/2}$ | $(1-\delta_{ij}^2)\,e^{-\delta_{ij}^2/2}$ | ✓ |
+
+LCC-tanh and LCC-exp use the same kernel functions as scikit-learn's logcosh and exp contrasts; the sole structural difference is that the pointwise argument $u = y_i$ is replaced by the pairwise difference $\delta_{ij} = y_i - y_j$, averaged over a subsample of size $B$. This substitution introduces skewness adaptivity while preserving the boundedness of the original kernels.
+
+---
+
+## Polynomial Contrast Expansions
+
+On whitened data ($m_1 = 0$, $m_2 = 1$), the LCC expectation $V_k = \mathbb{E}[\kappa_k]$ reduces to the following polynomials in the higher moments:
+
+$$V_4 = \frac{21}{64} - \frac{3}{64}\,m_4,$$
+
+$$V_6 = \frac{145}{3888}\,m_3^2 + \frac{115}{2592}\,m_4 - \frac{5}{7776}\,m_6 - \frac{125}{648},$$
+
+$$V_8 = -\frac{7665}{131072}\,m_3^2 + \frac{497}{262144}\,m_3 m_5 + \frac{2765}{2097152}\,m_4^2 - \frac{18795}{524288}\,m_4 + \frac{329}{524288}\,m_6 - \frac{7}{2097152}\,m_8 + \frac{117705}{1048576}.$$
+
+$V_4$ depends only on $m_4$ (kurtosis). $V_6$ jointly couples $m_3^2$, $m_4$, and $m_6$. $V_8$ reaches eighth order and contains the cross terms $m_3 m_5$ and $m_4^2$, which are absent from all three scikit-learn built-in contrasts.
+
+---
+
+## Explicit Nonlinearity for k=8
+
+Taking partial derivatives of $V_8$ with respect to $m_3$, $m_4$, $m_5$, $m_6$, and $m_8$, the LCC contrast function for $k = 8$ is
+
+$$h_8(y) = \left(-\frac{7665}{43\,688}\,\hat{m}_3 + \frac{497}{52\,429}\,\hat{m}_5\right)y^2 + \left(\frac{2765}{524\,288}\,\hat{m}_4 - \frac{18795}{524\,288}\right)y^3 + \frac{497}{52\,429}\,\hat{m}_3\,y^4 + \frac{329}{87\,381}\,y^5 - \frac{7}{262\,144}\,y^7,$$
+
+where $\hat{m}_r$ are empirical moments of the current projection $y = \mathbf{w}^\top\mathbf{z}$, recomputed at each Newton iteration:
+
+$$\hat{m}_r = N^{-1}\sum_{n=1}^{N} y_n^r.$$
+
+The derivative is
+
+$$h_8'(y) = 2\left(-\frac{7665}{43\,688}\,\hat{m}_3 + \frac{497}{52\,429}\,\hat{m}_5\right)y + 3\left(\frac{2765}{524\,288}\,\hat{m}_4 - \frac{18795}{524\,288}\right)y^2 + \frac{4 \cdot 497}{52\,429}\,\hat{m}_3\,y^3 + \frac{5 \cdot 329}{87\,381}\,y^4 - \frac{7 \cdot 7}{262\,144}\,y^6,$$
+
+and the Newton denominator
+
+$$\beta_8 = N^{-1}\sum_n h_8'(y_n)$$
+
+is computed in a single vectorized pass.
+
+---
+
 ## Citation
 
 ```bibtex
